@@ -1,0 +1,1 @@
+INSERT INTO users (email, hash_password) VALUES (?, ?);
