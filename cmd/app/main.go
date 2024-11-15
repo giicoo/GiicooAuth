@@ -5,9 +5,9 @@ import (
 	"github.com/giicoo/GiicooAuth/internal/app"
 )
 
-// @title           Swagger Example API
+// @title           GiicooAuth
 // @version         1.0
-// @description     This is a sample server celler server.
+// @description     Service for auth
 
 // @host      localhost:8080
 // @BasePath  /

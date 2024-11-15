@@ -22,12 +22,12 @@ func NewJWT(key string) *JWT {
 		key: key,
 	}
 }
-func (j *JWT) NewJWT(id int, login string) (string, error) {
+func (j *JWT) NewJWT(id int, login string, d time.Duration) (string, error) {
 	// generate jwt token by user login with
 	// + ExpiresAt - time for access
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &Claims{
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: jwt.TimeFunc().Add(60 * time.Minute).Unix(),
+			ExpiresAt: jwt.TimeFunc().Add(d).Unix(),
 			IssuedAt:  jwt.TimeFunc().Unix(),
 		},
 		Login:  login,

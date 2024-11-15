@@ -5,14 +5,13 @@ import (
 	"net/http"
 
 	"github.com/giicoo/GiicooAuth/internal/config"
-	"github.com/julienschmidt/httprouter"
 )
 
 type Server struct {
 	httpServer *http.Server
 }
 
-func NewServer(cfg *config.Config, r *httprouter.Router) *Server {
+func NewServer(cfg *config.Config, r http.Handler) *Server {
 	return &Server{
 		httpServer: &http.Server{
 			Addr:    cfg.Server.Host + ":" + cfg.Server.Port,

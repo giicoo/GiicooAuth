@@ -7,8 +7,6 @@ import (
 )
 
 func (sq *Sqlite) GetUserById(id int) (models.User, error) {
-	sq.m.RLock()
-	defer sq.m.RUnlock()
 
 	file, err := os.ReadFile(sq.cfg.DB.PathToSQL + "get_user_by_id.sql")
 	if err != nil {
@@ -27,8 +25,6 @@ func (sq *Sqlite) GetUserById(id int) (models.User, error) {
 }
 
 func (sq *Sqlite) GetUserByEmail(email string) (models.User, error) {
-	sq.m.RLock()
-	defer sq.m.RUnlock()
 
 	file, err := os.ReadFile(sq.cfg.DB.PathToSQL + "get_user_by_email.sql")
 	if err != nil {
@@ -47,17 +43,18 @@ func (sq *Sqlite) GetUserByEmail(email string) (models.User, error) {
 }
 
 func (sq *Sqlite) CreateUser(email string, hash_password string) error {
-	sq.m.Lock()
-	defer sq.m.Unlock()
 
 	file, err := os.ReadFile(sq.cfg.DB.PathToSQL + "insert_user.sql")
 	if err != nil {
 		return err
 	}
 	stmt := string(file)
-	_, err = sq.db.Exec(stmt, email, hash_password)
+	s, err := sq.db.Exec(stmt, email, hash_password)
+	sq.log.Info(s)
 	if err != nil {
 		return err
 	}
 	return nil
 }
+
+//TODO: mutex
