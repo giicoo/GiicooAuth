@@ -5,6 +5,18 @@ definitions:
       error:
         type: string
     type: object
+  models.JwtRequest:
+    properties:
+      jwt:
+        type: string
+    required:
+    - jwt
+    type: object
+  models.JwtResponse:
+    properties:
+      jwt:
+        type: string
+    type: object
   models.UserRequest:
     properties:
       email:
@@ -29,6 +41,66 @@ info:
   title: GiicooAuth
   version: "1.0"
 paths:
+  /check-token/:
+    post:
+      consumes:
+      - application/json
+      description: Check JWT token
+      parameters:
+      - description: Write JWT token
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.JwtRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Check JWT Token
+      tags:
+      - auth
+  /generate-token/:
+    post:
+      consumes:
+      - application/json
+      description: generate JWT token
+      parameters:
+      - description: Write Email and Password
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.JwtResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Generate JWT Token
+      tags:
+      - auth
   /singup/:
     post:
       consumes:

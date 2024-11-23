@@ -10,6 +10,16 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// @Summary      	Generate JWT Token
+// @Description  	generate JWT token
+// @Tags         	auth
+// @Accept			json
+// @Produce			json
+// @Param			user	body	models.UserRequest	true	"Write Email and Password"
+// @Success		 	200		{object}	models.JwtResponse
+// @Failure      	400  	{object}  	models.ErrorResponse
+// @Failure      	500  	{object}  	models.ErrorResponse
+// @Router       	/generate-token/ [post]
 func (h *Handler) GenerateJWT(w http.ResponseWriter, r *http.Request) {
 	logrus.Info(r.URL)
 	body := r.Body
@@ -44,6 +54,16 @@ func (h *Handler) GenerateJWT(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// @Summary      	Check JWT Token
+// @Description  	Check JWT token
+// @Tags         	auth
+// @Accept			json
+// @Produce			json
+// @Param			user	body	models.JwtRequest	true	"Write JWT token"
+// @Success		 	200		{object}	models.UserResponse
+// @Failure      	400  	{object}  	models.ErrorResponse
+// @Failure      	500  	{object}  	models.ErrorResponse
+// @Router       	/check-token/ [post]
 func (h *Handler) CheckJWT(w http.ResponseWriter, r *http.Request) {
 	logrus.Info(r.URL)
 	body := r.Body
