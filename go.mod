@@ -30,6 +30,7 @@ require (
 )
 
 require (
+	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/go-playground/validator/v10 v10.22.1
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/julienschmidt/httprouter v1.3.0 // indirect

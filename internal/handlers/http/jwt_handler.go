@@ -1,11 +1,11 @@
 package http_handler
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 
 	"github.com/giicoo/GiicooAuth/internal/models"
+	"github.com/giicoo/GiicooAuth/pkg/data"
 	errTools "github.com/giicoo/GiicooAuth/pkg/err_tools"
 	"github.com/sirupsen/logrus"
 )
@@ -27,13 +27,13 @@ func (h *Handler) GenerateJWT(w http.ResponseWriter, r *http.Request) {
 
 	user := models.UserRequest{}
 
-	if err := json.NewDecoder(body).Decode(&user); err != nil {
+	if err := data.FromJSON(&user, body); err != nil {
 		h.log.Error(fmt.Errorf("error with json decoder: %s", err))
 		JSONHandleError(w, errTools.ErrInvalidJSON, err)
 		return
 	}
 
-	err := ValidateStructure(user)
+	err := data.ValidateStructure(user)
 	if err != nil {
 		h.log.Error(fmt.Errorf("error with validate struct: %s", err))
 		JSONHandleError(w, err, err)
@@ -71,13 +71,13 @@ func (h *Handler) CheckJWT(w http.ResponseWriter, r *http.Request) {
 
 	jwtToken := models.JwtRequest{}
 
-	if err := json.NewDecoder(body).Decode(&jwtToken); err != nil {
+	if err := data.FromJSON(&jwtToken, body); err != nil {
 		h.log.Error(fmt.Errorf("error with json decoder: %s", err))
 		JSONHandleError(w, errTools.ErrInvalidJSON, err)
 		return
 	}
 
-	err := ValidateStructure(jwtToken)
+	err := data.ValidateStructure(jwtToken)
 	if err != nil {
 		h.log.Error(fmt.Errorf("error with validate struct: %s", err))
 		JSONHandleError(w, err, err)

@@ -1,11 +1,11 @@
 package http_handler
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 
 	"github.com/giicoo/GiicooAuth/internal/models"
+	"github.com/giicoo/GiicooAuth/pkg/data"
 	errTools "github.com/giicoo/GiicooAuth/pkg/err_tools"
 )
 
@@ -26,13 +26,13 @@ func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	user := models.UserRequest{}
 
-	if err := json.NewDecoder(body).Decode(&user); err != nil {
+	if err := data.FromJSON(&user, body); err != nil {
 		h.log.Error(fmt.Errorf("error with json decoder: %s", err))
 		JSONHandleError(w, errTools.ErrInvalidJSON, err)
 		return
 	}
 
-	err := ValidateStructure(user)
+	err := data.ValidateStructure(user)
 	if err != nil {
 		h.log.Error(fmt.Errorf("error with validate struct: %s", err))
 		JSONHandleError(w, err, err)
