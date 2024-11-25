@@ -52,6 +52,4 @@ func SendResponse(w http.ResponseWriter, r interface{}) error {
 	return nil
 }
 
-//TODO:handle error
 //TODO: testing
-//TODO: swagger
