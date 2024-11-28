@@ -10,7 +10,7 @@ func (sq *Sqlite) GetUserById(id int) (models.User, error) {
 	user := models.User{}
 
 	row := sq.db.QueryRow(stmt, id)
-	err := row.Scan(&user.UserId, &user.Email, &user.HashPassword)
+	err := row.Scan(&user.UserId, &user.Email, &user.HashPassword, &user.RefreshToken)
 	if err != nil {
 		return models.User{}, err
 	}
@@ -24,7 +24,7 @@ func (sq *Sqlite) GetUserByEmail(email string) (models.User, error) {
 	user := models.User{}
 
 	row := sq.db.QueryRow(stmt, email)
-	err := row.Scan(&user.UserId, &user.Email, &user.HashPassword)
+	err := row.Scan(&user.UserId, &user.Email, &user.HashPassword, &user.RefreshToken)
 	if err != nil {
 		return models.User{}, err
 	}
@@ -33,8 +33,8 @@ func (sq *Sqlite) GetUserByEmail(email string) (models.User, error) {
 }
 
 func (sq *Sqlite) CreateUser(email string, hash_password string) error {
-	stmt := "INSERT INTO users (email, hash_password) VALUES (?, ?);"
-	s, err := sq.db.Exec(stmt, email, hash_password)
+	stmt := "INSERT INTO users (email, hash_password, refresh_token) VALUES (?, ?, ?);"
+	s, err := sq.db.Exec(stmt, email, hash_password, "")
 	sq.log.Info(s)
 	if err != nil {
 		return err

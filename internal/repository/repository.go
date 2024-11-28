@@ -8,5 +8,5 @@ type Repo interface {
 	GetUserByEmail(email string) (models.User, error)
 	CreateUser(email string, hash_password string) error
 
-	// SaveRefreshTokenToDB(userID int, refreshToken string)
+	SaveRefreshTokenToDB(userID int, refreshToken string) error
 }

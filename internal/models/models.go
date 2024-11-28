@@ -6,6 +6,7 @@ type User struct {
 	UserId       int    `json:"user_id"`
 	Email        string `json:"email"`
 	HashPassword string `json:"hash_password"`
+	RefreshToken string `json:"refresh_token"`
 }
 
 type UserRequest struct {

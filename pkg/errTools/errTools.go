@@ -19,17 +19,14 @@ var (
 	// Status: 400
 	ErrWrongPassword = &sentinelAPIError{status: http.StatusBadRequest, msg: "invalid password"}
 
-	// Status: 400
-	ErrInvalidAccessToken = &sentinelAPIError{status: http.StatusBadRequest, msg: "invalid token: invalid access token"}
+	// Status: 401
+	ErrInvalidAccessToken = &sentinelAPIError{status: http.StatusUnauthorized, msg: "invalid token: invalid access token"}
 
-	// Status: 400
-	ErrInvalidRefreshToken = &sentinelAPIError{status: http.StatusBadRequest, msg: "invalid token: invalid refresh token"}
+	// Status: 401
+	ErrInvalidRefreshToken = &sentinelAPIError{status: http.StatusUnauthorized, msg: "invalid token: invalid refresh token, please login"}
 
 	// Status: 400
 	ErrEmailNotReg = &sentinelAPIError{status: http.StatusBadRequest, msg: "invalid email: account with email is not created"}
-
-	// Status: 401
-	ErrUnauthorized = &sentinelAPIError{status: http.StatusUnauthorized, msg: "invalid access and refresh token, please login"}
 )
 
 type sentinelAPIError struct {

@@ -39,17 +39,32 @@ func (as *AuthService) Login(email string, password string) (string, string, err
 		return "", "", errTools.WrapError(err, errTools.ErrWrongPassword)
 	}
 
-	access, refresh, err := as.jwtManager.GenerateTokens(userDB.UserId, as.cfg.JWT.Access.Time, as.cfg.JWT.Refresh.Time)
+	access, refresh, err := as.GenerateTokens(userDB.UserId)
 	if err != nil {
 		return "", "", err
 	}
 
+	if err := as.repo.SaveRefreshTokenToDB(userDB.UserId, refresh); err != nil {
+		return "", "", err
+	}
 	return access, refresh, nil
 
 }
 
 func (as *AuthService) GenerateNewAccessToken(userID int) (string, error) {
 	return as.jwtManager.GenerateAccessToken(userID, as.cfg.JWT.Access.Time)
+}
+
+func (as *AuthService) GenerateTokens(userID int) (string, string, error) {
+	access, refresh, err := as.jwtManager.GenerateTokens(userID, as.cfg.JWT.Access.Time, as.cfg.JWT.Refresh.Time)
+	if err != nil {
+		return "", "", err
+	}
+
+	if err := as.repo.SaveRefreshTokenToDB(userID, refresh); err != nil {
+		return "", "", err
+	}
+	return access, refresh, nil
 }
 
 func (as *AuthService) ValidateAccessToken(accessToken string) (int, error) {
@@ -67,40 +82,3 @@ func (as *AuthService) ValidateRefreshToken(refreshToken string) (int, error) {
 	}
 	return userID, nil
 }
-
-// func (s *Services) Login(email, password string) (models.JwtResponse, error) {
-// 	user, err := s.repo.GetUserByEmail(email)
-// 	if err != nil {
-// 		return models.JwtResponse{}, err
-// 	}
-
-// 	if s.hashTools.CheckPasswordHash(password, user.HashPassword) {
-
-// 	} else {
-// 		return models.JwtResponse{}, errTools.WrapError(err, errTools.ErrWrongPassword)
-// 	}
-// }
-
-// func (s *Services) CheckJWT(jwtToken string) (models.UserResponse, error) {
-// 	uid, email, err := s.jwtTools.ParseJWT(jwtToken)
-// 	if err != nil {
-// 		switch {
-// 		case strings.HasPrefix(err.Error(), "token is expired"):
-// 			{
-// 				return models.UserResponse{}, errTools.WrapError(err, errTools.ErrInvalidTokenExpired)
-// 			}
-// 		default:
-// 			{
-// 				return models.UserResponse{}, errTools.WrapError(err, errTools.ErrInvalidTokenSyntax)
-// 			}
-// 		}
-
-// 	}
-
-// 	userResponse := models.UserResponse{
-// 		UserId: uid,
-// 		Email:  email,
-// 	}
-
-// 	return userResponse, nil
-// }

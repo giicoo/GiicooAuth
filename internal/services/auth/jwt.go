@@ -28,7 +28,6 @@ func (jm *JwtManager) GenerateTokens(userID int, accessTokenTime int, refreshTok
 	if err != nil {
 		return "", "", err
 	}
-	// as.repo.SaveRefreshTokenToDB(userID, refreshToken)
 
 	return accessToken, refreshToken, nil
 }
