@@ -15,6 +15,15 @@ type Config struct {
 		Path      string `yaml:"path"`
 		PathToSQL string `yaml:"path_to_sql"`
 	} `yaml:"db"`
+	JWT struct {
+		PathToKey string `yaml:"path_to_key"`
+		Access    struct {
+			Time int `yaml:"time"`
+		} `yaml:"access"`
+		Refresh struct {
+			Time int `yaml:"time"`
+		} `yaml:"refresh"`
+	} `yaml:"jwt"`
 }
 
 func LoadConfig(path string) (*Config, error) {

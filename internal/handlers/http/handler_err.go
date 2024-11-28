@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+
 	"github.com/giicoo/GiicooAuth/internal/models"
-	errTools "github.com/giicoo/GiicooAuth/pkg/err_tools"
+	"github.com/giicoo/GiicooAuth/pkg/errTools"
+
 	"net/http"
 )
 

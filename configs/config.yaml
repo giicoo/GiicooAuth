@@ -4,3 +4,9 @@ server:
 db:
   path: "./internal/repository/sqlite/store.db"
   path_to_sql: "./internal/repository/sql/"
+jwt:
+  path_to_key: "./configs/key"
+  access:
+    time: 15
+  refresh:
+    time: 24

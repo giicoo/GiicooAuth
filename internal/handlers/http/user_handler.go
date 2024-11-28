@@ -5,9 +5,9 @@ import (
 	"net/http"
 
 	"github.com/giicoo/GiicooAuth/internal/models"
-	"github.com/giicoo/GiicooAuth/pkg/data"
-	errTools "github.com/giicoo/GiicooAuth/pkg/err_tools"
 )
+
+type userKey struct{}
 
 // @Summary      	Create User
 // @Description  	create user
@@ -24,22 +24,9 @@ func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	body := r.Body
 	defer body.Close()
 
-	user := models.UserRequest{}
+	user := r.Context().Value(userKey{}).(models.UserRequest)
 
-	if err := data.FromJSON(&user, body); err != nil {
-		h.log.Error(fmt.Errorf("error with json decoder: %s", err))
-		JSONHandleError(w, errTools.ErrInvalidJSON, err)
-		return
-	}
-
-	err := data.ValidateStructure(user)
-	if err != nil {
-		h.log.Error(fmt.Errorf("error with validate struct: %s", err))
-		JSONHandleError(w, err, err)
-		return
-	}
-
-	userResponse, err := h.services.CreateUser(user.Email, user.Password)
+	userResponse, err := h.services.UserService.CreateUser(user.Email, user.Password)
 	if err != nil {
 		h.log.Error(fmt.Errorf("error with service create user: %s", err))
 		JSONHandleError(w, err, nil)

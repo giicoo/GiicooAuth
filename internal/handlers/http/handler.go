@@ -28,12 +28,18 @@ func NewHandler(cfg *config.Config, log *logrus.Logger, services *services.Servi
 
 func (h *Handler) CreateRouter() *mux.Router {
 	r := mux.NewRouter()
-	r.HandleFunc("/singup", h.CreateUser).Methods("POST")
-	r.HandleFunc("/generate-token", h.GenerateJWT).Methods("POST")
-	r.HandleFunc("/check-token", h.CheckJWT).Methods("POST")
 
+	userPost := r.Methods(http.MethodPost).Subrouter()
+	userPost.HandleFunc("/singup", h.CreateUser)
+	userPost.Use(h.MiddlewareValidateUser)
+
+	authPost := r.Methods(http.MethodPost).Subrouter()
+	authPost.HandleFunc("/login", h.Login)
+	authPost.HandleFunc("/validate", h.Validate)
+
+	// swagger docs
 	r.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
-		httpSwagger.URL("http://localhost:8080/swagger/doc.json"), //The url pointing to API definition
+		httpSwagger.URL("http://localhost:8080/swagger/doc.json"),
 		httpSwagger.DeepLinking(true),
 		httpSwagger.DocExpansion("none"),
 		httpSwagger.DomID("swagger-ui"),

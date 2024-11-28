@@ -7,4 +7,6 @@ type Repo interface {
 	GetUserById(id int) (models.User, error)
 	GetUserByEmail(email string) (models.User, error)
 	CreateUser(email string, hash_password string) error
+
+	// SaveRefreshTokenToDB(userID int, refreshToken string)
 }

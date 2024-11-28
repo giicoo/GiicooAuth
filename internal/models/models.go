@@ -1,5 +1,7 @@
 package models
 
+import "github.com/golang-jwt/jwt"
+
 type User struct {
 	UserId       int    `json:"user_id"`
 	Email        string `json:"email"`
@@ -16,14 +18,30 @@ type UserResponse struct {
 	Email  string `json:"email"`
 }
 
-type JwtRequest struct {
-	JwtToken string `json:"jwt" validate:"required"`
+type AccessTokenRequest struct {
+	AccessToken string `json:"access_token" validate:"required"`
 }
 
-type JwtResponse struct {
-	JwtToken string `json:"jwt"`
+type AccessTokenResponse struct {
+	AccessToken string `json:"access_token"`
+}
+
+type ValidAccessTokenResponse struct {
+	Valid  bool `json:"valid"`
+	UserID int  `json:"user_id"`
+}
+
+type InvalidAccessTokenResponse struct {
+	Valid       bool   `json:"valid"`
+	AccessToken string `json:"new_access_token"`
 }
 
 type ErrorResponse struct {
 	Err string `json:"error"`
+}
+
+type Claims struct {
+	jwt.StandardClaims
+	UserId    int    `json:"id"`
+	TokenType string `json:"token_type"`
 }

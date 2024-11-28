@@ -1,7 +1,7 @@
 package data
 
 import (
-	errTools "github.com/giicoo/GiicooAuth/pkg/err_tools"
+	"github.com/giicoo/GiicooAuth/pkg/errTools"
 	"github.com/go-playground/validator"
 )
 
